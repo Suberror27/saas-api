@@ -27,7 +27,7 @@ export default function Home() {
           }
   
           return subcollections;
-        };
+        }; 
   
         // Fetch main collection and their subcollections
         const querySnapshot = await getDocs(collection(db, 'Applications'));
