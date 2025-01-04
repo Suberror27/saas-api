@@ -21,7 +21,7 @@ export default async function getHandler(req, res) {
     
         const lastDoc = snapshot.docs[0];
         const lastUserId = lastDoc.id;
-        // console.log(lastUserId);
+        console.log("Last user ID is: " + lastUserId);
       
         // Assuming the ID pattern is 'app' followed by a number
         const lastNumber = parseInt(lastUserId.replace('user', ''), 10);

@@ -1,26 +1,32 @@
-// import db from '@/lib/firebase';
+// Import the Firestore database instance from the custom Firebase Admin module
 import { db } from '@/lib/firebaseAdmin';
 
-// Custom code to auto increment newly created Applications document ID's to keep a consistent pattern, starting with app001 
+// Custom code to auto increment newly created applications document ID's to keep a consistent pattern, starting with app001 
 const getNextId = async () => {
+
+    // Here we are retrieving the last created document in the "Applications" collection
     const snapshot = await db.collection('Applications')
-      .orderBy('name', 'desc') // Order by name (or any other field) to get the last document
+      .orderBy('name', 'desc') // Here we are ordering by name in descending order
       .limit(1) // Only get the last document
-      .get(); // Retrive the id
+      .get(); // Execute the query to get the snapshot
   
+    // Check if the collection is empty (no document exist)      
     if (snapshot.empty) {
       return 'app001'; // If no documents, start with app001
     }
 
+    // Extract the last document from the snapshot
     const lastDoc = snapshot.docs[0];
-    const lastId = lastDoc.id;
+    const lastId = lastDoc.id; // Get the document ID of the last document
+    console.log("Last app ID is: " + lastId);
   
-    // Assuming the ID pattern is 'app' followed by a number
+    // Here we are parsing the numeric part of the last ID (Exapmle: from "app001" extract "002")
     const lastNumber = parseInt(lastId.replace('app', ''), 10);
-    const nextNumber = lastNumber + 1;
-    const nextId = `app${nextNumber.toString().padStart(3, '0')}`; // Pads the number to always be 3 digits
+    const nextNumber = lastNumber + 1; // Incrementing the number by 1 to get the next ID
+    const nextId = `app${nextNumber.toString().padStart(3, '0')}`; // Formating the number with leading zeros to make it 3 digits
     // console.log(nextId);
-    return nextId;
+
+    return nextId; // Return the generated custom ID
 };
 
 export default async function getHandler(req, res) {
@@ -29,30 +35,33 @@ export default async function getHandler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    // Extract name from the request body
+    // Extracting name from the request body
     const {name} = req.body;
 
-    // Making sure there is a name being passed in the request body, else return error message
+    // Making sure there is a name being passed in the request body, else return error 404 message
     if(!name) {
         res.status(400).json({error: "Application name is required"})
     } else {
 
         try {
-            const nextId = await getNextId(); // Generate the next ID
+            // Generating the next custom ID for the new document
+            const nextId = await getNextId();
             
-            // Create a new document with the custom ID
+            // Create a new document in the "Applications" collection
             const newApplicationRef = await db.collection('Applications').doc(nextId).set({
-                name,
+                name, // Setting the document's name field to the provided value
             });
 
-            res.status(200).json({
-                id: nextId, // Return the generated custom ID
-                name, // Return the application name
-            });
+            // Responding with the generated ID and application name
+            res.status(200).json({id: nextId, name, });
+
         } catch (error) {
+            // Handling any errors that occuer during document creation
             console.error('Error creating application:', error);
             res.status(500).json({ error: 'Failed to create application' });
         }
+
+
 
         // ----------------------Simple code that creates a new document ID in Applications collection. Firestore creates the new random document ID and returns it along with the name------------------
 
