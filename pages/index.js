@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Recursive function to fetch subcollections
+        // Recursive function to fetch subcollections.
         const fetchSubcollections = async (docRef) => {
           const subcollections = {}; // To store subcollection data
   
