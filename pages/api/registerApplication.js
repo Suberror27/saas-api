@@ -25,7 +25,7 @@ export default async function postHandler(req, res) {
             });
 
             // Responding with the generated ID and application name
-            res.status(200).json({id: docRef.id, name, });
+            return res.status(200).json({id: docRef.id, name, });
 
         } catch (error) {
             // Handling any errors that occuer during document creation

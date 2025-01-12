@@ -13,14 +13,15 @@ export default async function postHandler(req, res) {
         return res.status(400).json({error: "Name, Roles, userId, and ApplicationId fields are required"})
     } else {
         try {
-            console.log(typeof(roles));
+
             // Reference to the Users subcollection under the specific ApplicationId document
-            const userRef = db.collection("Applications").doc(applicationId).collection("Users").doc(userId);
+            const userRef = db.collection("Applications").doc(applicationId).collection("Users").doc();
             
             // Create the new user document
             await userRef.set({
                 name,
-                roles
+                roles,
+                userId
             });
 
             return res.status(200).json({ success: true, message: "User created successfully", newUser: {name: name, roles: roles, userId: userId} });
