@@ -1,7 +1,7 @@
 // Import the Firestore database instance from the custom Firebase Admin module
 import { db } from '@/lib/firebaseAdmin';
 
-export default async function getHandler(req, res) {
+export default async function postHandler(req, res) {
     // Making sure the method is always POST else return error message
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
