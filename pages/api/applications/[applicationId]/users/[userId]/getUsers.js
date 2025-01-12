@@ -17,8 +17,8 @@ export default async function getHandler(req, res) {
             // Reference to the Users subcollection under the specific ApplicationId document
             const userRef = await db.collection("Applications").doc(applicationId).collection("Users").doc(userId).get();
 
-            if(!userRef) {
-                return res.status(400).json({error: "User not found"});
+            if(!userRef.exists) {
+                return res.status(400).json({error: "User not found under the provided applicationId"});
             } else {
                 const userData = userRef.data();
                 return res.status(200).json({ success: true, message: "User data retreived succesfully", userData });
