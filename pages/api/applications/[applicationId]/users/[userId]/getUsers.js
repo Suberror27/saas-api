@@ -8,28 +8,26 @@ export default async function getHandler(req, res) {
 
     const applicationId = req.query.applicationId;
     const userId = req.query.userId;
-    console.log(applicationId);
-    console.log(userId);
+   
+    if(!userId || !applicationId) {
+        return res.status(400).json({error: "userId and applicationId data is required"})
+    } else {
+        try {
 
-    // if(!userId || !applicationId) {
-    //     return res.status(400).json({error: "userId and applicationId data is required"})
-    // } else {
-    //     try {
+            // Reference to the Users subcollection under the specific ApplicationId document
+            const userRef = await db.collection("Applications").doc(applicationId).collection("Users").doc(userId).get();
 
-    //         // Reference to the Users subcollection under the specific ApplicationId document
-    //         const userRef = db.collection("Applications").doc(applicationId).collection("Users").doc(userId);
-            
-    //         // Create the new user document
-    //         await userRef.set({
-    //             name,
-    //             role
-    //         });
-
-    //         return res.status(200).json({ success: true, message: "User created successfully", newUser: {name: name, role: role, userId: userId} });
-    //     } catch (error) {
-    //         console.error('Error creating application:', error);
-    //         return res.status(500).json({ error: 'Failed to create New User' });
-    //     }
-    // }
+            if(!userRef) {
+                return res.status(400).json({error: "User not found"});
+            } else {
+                const userData = userRef.data();
+                return res.status(200).json({ success: true, message: "User data retreived succesfully", userData });
+            }
+           
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return res.status(500).json({ error: 'Failed to get users information' });
+        }
+    }
 }
 
