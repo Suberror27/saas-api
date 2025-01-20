@@ -18,7 +18,11 @@ export default async function postHandler(req, res) {
 
             const newIdea = await docRef.set({
                 text,
-                metadata 
+                metadata: {
+                    ... metadata, 
+                    timesPicked: 0,
+                    pickHistory: [],
+                }
             });
     
             return res.status(200).json(
@@ -28,14 +32,8 @@ export default async function postHandler(req, res) {
                     metadata: {
                         createdBy: metadata.createdBy, 
                         createdAt: metadata.createdAt, 
-                        lastPickedAt: "timestamp", 
-                        timesPicked: "timestamp", 
-                        pickHistory: [
-                            {
-                                userId: "string", 
-                                pickedAt: "timestamp"
-                            }
-                        ]
+                        timesPicked: 0, 
+                        pickHistory: [],
                     } 
                 }
             )

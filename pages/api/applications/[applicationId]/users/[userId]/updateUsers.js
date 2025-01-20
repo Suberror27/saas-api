@@ -41,7 +41,7 @@ export default async function patchHandler(req, res) {
     
                     await userRef.update(updateInformation);
     
-                    return res.status(200).json({ success: true, message: "User data updated succesfully", updatedInfo: {userId: userId, name: name ? name : updateInformation.name = userDoc.data().name, roles: roles ? roles : userDoc.data().roles} });
+                    return res.status(200).json({ success: true, message: "User data updated succesfully", updatedInfo: {userId: userDoc.data().userId, name: updateInformation.name, roles: roles ? roles : userDoc.data().roles} });
                 }
             } catch (error) {
                 console.error("Error updating user:", error);
