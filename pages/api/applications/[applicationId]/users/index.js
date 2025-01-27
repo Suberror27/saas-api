@@ -15,13 +15,13 @@ export default async function postHandler(req, res) {
         try {
 
             // Reference to the Users subcollection under the specific ApplicationId document
-            const userRef = db.collection("Applications").doc(applicationId).collection("Users").doc();
+            // const userRef = db.collection("Applications").doc(applicationId).collection("Users").doc();
+            const userRef = db.collection("Applications").doc(applicationId).collection("Users").doc(userId);
             
             // Create the new user document
             await userRef.set({
                 name,
-                roles,
-                userId
+                roles
             });
 
             return res.status(200).json({ success: true, message: "User created successfully", newUser: {name: name, roles: roles, userId: userId} });
