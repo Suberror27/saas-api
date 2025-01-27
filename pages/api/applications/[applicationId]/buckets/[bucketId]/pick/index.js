@@ -7,12 +7,12 @@ export default async function postHandler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const dateStamp = new Date();
-    const formattedDateStamp = dateStamp.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
+    // const dateStamp = new Date();
+    // const formattedDateStamp = dateStamp.toLocaleDateString('en-US', { 
+    //     year: 'numeric', 
+    //     month: 'long', 
+    //     day: 'numeric' 
+    // });
    
     const applicationId = req.query.applicationId;
     const bucketId = req.query.bucketId;
