@@ -2,7 +2,7 @@ import { db } from '@/lib/firebaseAdmin';
 
 export default async function deleteIdea(req, res) {
     if (req.method !== "DELETE") {
-        return res.status(400).json({message: "Method not allowed"})
+        return res.status(405).json({message: "Method not allowed"})
     } else {
 
         try {
