@@ -32,7 +32,7 @@ export default async function postHandler(req, res) {
                 const ideas = bucket.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
-                  }));
+                }));
     
                 let notPickedIdeas = [];
                 let picketIdeas = [];
