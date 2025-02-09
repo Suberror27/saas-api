@@ -1,10 +1,10 @@
-import { db } from '@/lib/firebaseAdmin';
-import { increment } from 'firebase/firestore';
+import { db } from "@/lib/firebaseAdmin";
+import { increment } from "firebase/firestore";
 
 export default async function postHandler(req, res) {
     // Making sure the method is always POST else return error message
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method not allowed" });
     }
 
     // const dateStamp = new Date();
@@ -16,7 +16,7 @@ export default async function postHandler(req, res) {
    
     const applicationId = req.query.applicationId;
     const bucketId = req.query.bucketId;
-    const {onlyUnpicked, userId, pickedAt } = req.body;
+    const {onlyUnpicked, userId, pickedAt, challengeId } = req.body;
     
     try {
         if (!userId || !pickedAt) {
@@ -57,6 +57,7 @@ export default async function postHandler(req, res) {
                     metadata: {
                         ...selectedRandomIdea.metadata,
                         timesPicked: selectedRandomIdea.metadata.timesPicked + 1,
+                        challengeId: challengeId ? challengeId : "",
                     }
                 }
                 
@@ -69,8 +70,8 @@ export default async function postHandler(req, res) {
             }
         }
     } catch (error) {
-        console.error('Error fetching data:', error);
-        return res.status(500).json({ error: 'Failed retrieve Ideas from bucket' });
+        console.error("Error fetching data:", error);
+        return res.status(500).json({ error: "Failed retrieve Ideas from bucket" });
     }
 }
 
