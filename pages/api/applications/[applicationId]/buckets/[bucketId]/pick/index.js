@@ -1,5 +1,4 @@
 import { db } from "@/lib/firebaseAdmin";
-import { increment } from "firebase/firestore";
 
 export default async function postHandler(req, res) {
     // Making sure the method is always POST else return error message
